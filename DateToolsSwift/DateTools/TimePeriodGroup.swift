@@ -32,7 +32,7 @@ open class TimePeriodGroup: Sequence {
      *  Nil if any `TimePeriod` in group has a nil beginning date (indefinite).
      *  (Read Only)
      */
-    public var beginning: Date? {
+    var beginning: Date? {
         return _beginning
     }
     
@@ -41,14 +41,14 @@ open class TimePeriodGroup: Sequence {
      *  Nil if any `TimePeriod` in group has a nil end date (indefinite).
      *  (Read Only)
      */
-    public var end: Date? {
+    var end: Date? {
         return _end
     }
     
     /**
      *  The number of periods in the periods array.
      */
-    public var count: Int {
+    var count: Int {
         return periods.count
     }
     
@@ -56,7 +56,7 @@ open class TimePeriodGroup: Sequence {
      *  The total amount of time between the earliest and latest dates stored in the
      *  periods array. Nil if any beginning or end date in any contained period is nil.
      */
-    public var duration: TimeInterval? {
+    var duration: TimeInterval? {
         if beginning != nil && end != nil {
             return end!.timeIntervalSince(beginning!)
         }
@@ -78,7 +78,7 @@ open class TimePeriodGroup: Sequence {
      *
      *  - returns: True if the periods arrays are the same
      */
-    public func equals(_ group: TimePeriodGroup) -> Bool {
+    func equals(_ group: TimePeriodGroup) -> Bool {
         return containSameElements(array1: self.periods, group.periods)
     }
     
@@ -89,19 +89,19 @@ open class TimePeriodGroup: Sequence {
         return periods.makeIterator()
     }
     
-    public func map<T>(_ transform: (TimePeriodProtocol) throws -> T) rethrows -> [T] {
+    func map<T>(_ transform: (TimePeriodProtocol) throws -> T) rethrows -> [T] {
         return try periods.map(transform)
     }
     
-    public func filter(_ isIncluded: (TimePeriodProtocol) throws -> Bool) rethrows -> [TimePeriodProtocol] {
+    func filter(_ isIncluded: (TimePeriodProtocol) throws -> Bool) rethrows -> [TimePeriodProtocol] {
         return try periods.filter(isIncluded)
     }
     
-    public func forEach(_ body: (TimePeriodProtocol) throws -> Void) rethrows {
+    func forEach(_ body: (TimePeriodProtocol) throws -> Void) rethrows {
         return try periods.forEach(body)
     }
     
-    public func split(maxSplits: Int, omittingEmptySubsequences: Bool, whereSeparator isSeparator: (TimePeriodProtocol) throws -> Bool) rethrows -> [AnySequence<TimePeriodProtocol>] {
+    func split(maxSplits: Int, omittingEmptySubsequences: Bool, whereSeparator isSeparator: (TimePeriodProtocol) throws -> Bool) rethrows -> [AnySequence<TimePeriodProtocol>] {
         return try periods.split(maxSplits: maxSplits, omittingEmptySubsequences: omittingEmptySubsequences, whereSeparator: isSeparator).map(AnySequence.init)
     }
     
@@ -120,7 +120,7 @@ open class TimePeriodGroup: Sequence {
             return false // No need to sorting if they already have different counts
         }
         
-        var compArray1: [TimePeriodProtocol] = array1.sorted { (period1: TimePeriodProtocol, period2: TimePeriodProtocol) -> Bool in
+        let compArray1: [TimePeriodProtocol] = array1.sorted { (period1: TimePeriodProtocol, period2: TimePeriodProtocol) -> Bool in
             if period1.beginning == nil && period2.beginning == nil {
                 return false
             } else if (period1.beginning == nil) {
@@ -131,7 +131,7 @@ open class TimePeriodGroup: Sequence {
                 return period2.beginning! < period1.beginning!
             }
         }
-        var compArray2: [TimePeriodProtocol] = array2.sorted { (period1: TimePeriodProtocol, period2: TimePeriodProtocol) -> Bool in
+        let compArray2: [TimePeriodProtocol] = array2.sorted { (period1: TimePeriodProtocol, period2: TimePeriodProtocol) -> Bool in
             if period1.beginning == nil && period2.beginning == nil {
                 return false
             } else if (period1.beginning == nil) {
